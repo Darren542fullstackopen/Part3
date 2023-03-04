@@ -7,7 +7,7 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2]
 
-const url = `mongodb+srv://darrenluck01:${password}@cluster0.iyuzx1e.mongodb.net/noteApp?retryWrites=true&w=majority`
+const url = `mongodb+srv://darrenluck01:${password}@cluster0.iyuzx1e.mongodb.net/testNoteApp?retryWrites=true&w=majority`
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
@@ -18,6 +18,19 @@ const noteSchema = new mongoose.Schema({
 })
 
 const Note = mongoose.model('Note', noteSchema)
+
+const note = new Note({
+  content: 'HTML is LUIGI',
+  important: true,
+})
+
+note.save().then(() => {
+  console.log('note saved')
+  mongoose.connection.close()
+}).catch(error => {
+  console.log('Error', error)
+  mongoose.connection.close()
+})
 
 // const note = new Note({
 //     content: 'HTML is easy',
@@ -32,9 +45,9 @@ const Note = mongoose.model('Note', noteSchema)
 //     mongoose.connection.close()
 // })
 
-Note.find({ }).then(result => {
-  result.forEach(note => {
-    console.log(note)
-  })
-  mongoose.connection.close()
-});
+// Note.find({ }).then(result => {
+//   result.forEach(note => {
+//     console.log(note)
+//   })
+//   mongoose.connection.close()
+// });
